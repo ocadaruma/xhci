@@ -90,6 +90,11 @@ impl UsbCommandRegister {
     pub fn set_host_controller_reset(&mut self, b: bool) {
         self.0.set_bit(1, b);
     }
+
+    /// Sets the value of the interrupter enable bit.
+    pub fn set_interrupter_enable(&mut self, b: bool) {
+        self.0.set_bit(2, b);
+    }
 }
 impl fmt::Debug for UsbCommandRegister {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
