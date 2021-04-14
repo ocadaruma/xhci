@@ -163,6 +163,16 @@ impl CommandRingControlRegister {
         self.0.set_bit(0, s);
     }
 
+    /// Sets the value of the command stop bit
+    pub fn set_command_stop(&mut self, s: bool) {
+        self.0.set_bit(1, s);
+    }
+
+    /// Sets the value of the command abort bit
+    pub fn set_command_abort(&mut self, s: bool) {
+        self.0.set_bit(2, s);
+    }
+
     /// Returns the bit of the Command Ring Running bit.
     #[must_use]
     pub fn command_ring_running(self) -> bool {

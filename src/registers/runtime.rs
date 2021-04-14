@@ -3,12 +3,13 @@
 use super::capability::RuntimeRegisterSpaceOffset;
 use accessor::Mapper;
 use core::{convert::TryFrom, fmt};
+use bit_field::BitField;
 
 /// Interrupt Register Set
 #[repr(C)]
 #[derive(Copy, Clone, Debug)]
 pub struct InterruptRegisterSet {
-    _iman: u32,
+    pub iman: ImanRegister,
     _imod: u32,
     /// Event Ring Segment Table Size Register
     pub erstsz: EventRingSegmentTableSizeRegister,
@@ -43,6 +44,22 @@ impl InterruptRegisterSet {
         let base = mmio_base + usize::try_from(rtoff.get()).unwrap() + 0x20;
 
         accessor::Array::new(base, NUM_INTERRUPT_REGISTER_SET, mapper)
+    }
+}
+
+/// IMAN register
+#[repr(transparent)]
+#[derive(Copy, Clone, Debug)]
+pub struct ImanRegister(u32);
+impl ImanRegister {
+    /// Sets the value of the interrupt pending bit
+    pub fn set_interrupt_pending(&mut self, s: bool) {
+        self.0.set_bit(0, s);
+    }
+
+    /// Sets the value of the interrupt enable bit
+    pub fn set_interrupt_enable(&mut self, s: bool) {
+        self.0.set_bit(1, s);
     }
 }
 
