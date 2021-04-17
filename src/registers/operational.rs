@@ -294,6 +294,11 @@ impl PortStatusAndControlRegister {
         self.0.get_bit(0)
     }
 
+    /// Returns the value of the Port Enabled Disabled bit.
+    pub fn port_enabled_disabled(self) -> bool {
+        self.0.get_bit(1)
+    }
+
     /// Returns the value of the Port Reset bit.
     #[must_use]
     pub fn port_reset(self) -> bool {
