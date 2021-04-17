@@ -9,6 +9,7 @@ use bit_field::BitField;
 #[repr(C)]
 #[derive(Copy, Clone, Debug)]
 pub struct InterruptRegisterSet {
+    /// IMAN Register
     pub iman: ImanRegister,
     _imod: u32,
     /// Event Ring Segment Table Size Register

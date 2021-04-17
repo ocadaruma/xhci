@@ -316,6 +316,16 @@ impl PortStatusAndControlRegister {
     pub fn port_reset_changed(self) -> bool {
         self.0.get_bit(21)
     }
+
+    /// Assign the value of the bit flags by applying bitor
+    pub fn bit_or_assign(&mut self, bits: u32) {
+        self.0 |= bits;
+    }
+
+    /// Assign the value of the bit flags by applying bitand
+    pub fn bit_and_assign(&mut self, bits: u32) {
+        self.0 &= bits;
+    }
 }
 impl fmt::Debug for PortStatusAndControlRegister {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
