@@ -49,6 +49,16 @@ impl Register {
     pub fn set_doorbell_target(&mut self, target: u8) {
         self.0.set_bits(0..=7, target.into());
     }
+
+    /// Get a doorbell stream id.
+    pub fn doorbell_stream_id(self) -> u16 {
+        self.0.get_bits(16..32) as u16
+    }
+
+    /// Set a doorbell stream id.
+    pub fn set_doorbell_stream_id(&mut self, stream_id: u16) {
+        self.0.set_bits(16..32, stream_id as u32);
+    }
 }
 impl fmt::Debug for Register {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
