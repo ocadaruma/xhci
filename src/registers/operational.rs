@@ -322,6 +322,11 @@ impl PortStatusAndControlRegister {
         self.0.get_bit(21)
     }
 
+    /// Sets the value of the Port Reset Changed bit.
+    pub fn set_port_reset_changed(&mut self, b: bool) {
+        self.0.set_bit(21, b);
+    }
+
     /// Assign the value of the bit flags by applying bitor
     pub fn bit_or_assign(&mut self, bits: u32) {
         self.0 |= bits;
