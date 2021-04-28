@@ -181,7 +181,7 @@ macro_rules! cx {
                     }
                 }
                 impl DeviceHandler for Device{
-                    fn slot(&self) ->&dyn SlotHandler{
+                    fn slot_ref(&self) ->&dyn SlotHandler{
                         &self.slot
                     }
 
@@ -344,9 +344,9 @@ pub trait DeviceHandler {
     /// use xhci::context::{byte32::Device, DeviceHandler};
     ///
     /// let mut device = Device::new();
-    /// let slot = device.slot();
+    /// let slot = device.slot_ref();
     /// ```
-    fn slot(&self) -> &dyn SlotHandler;
+    fn slot_ref(&self) -> &dyn SlotHandler;
 
     /// Returns a mutable reference to the Slot Context.
     ///
@@ -476,7 +476,7 @@ pub trait SlotHandler: AsMut<[u32]> + AsRef<[u32]> {
     /// use xhci::context::{byte32::Device, DeviceHandler};
     ///
     /// let mut device = Device::new();
-    /// let slot = device.slot();
+    /// let slot = device.slot_ref();
     ///
     /// let num = slot.root_hub_port_number();
     /// ```
