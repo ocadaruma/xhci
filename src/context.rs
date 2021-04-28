@@ -181,6 +181,10 @@ macro_rules! cx {
                     }
                 }
                 impl DeviceHandler for Device{
+                    fn slot(&self) ->&dyn SlotHandler{
+                        &self.slot
+                    }
+
                     fn slot_mut(&mut self)->&mut dyn SlotHandler{
                         &mut self.slot
                     }
@@ -332,6 +336,18 @@ pub trait InputHandler {
 /// let ep1 = device.endpoints_mut(1);
 /// ```
 pub trait DeviceHandler {
+    /// Returns a reference to the Slot Context.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use xhci::context::{byte32::Device, DeviceHandler};
+    ///
+    /// let mut device = Device::new();
+    /// let slot = device.slot();
+    /// ```
+    fn slot(&self) -> &dyn SlotHandler;
+
     /// Returns a mutable reference to the Slot Context.
     ///
     /// # Examples
@@ -435,7 +451,7 @@ pub trait EndpointPairHandler {
 /// slot.set_context_entries(1);
 /// slot.set_root_hub_port_number(port_number);
 /// ```
-pub trait SlotHandler: AsMut<[u32]> {
+pub trait SlotHandler: AsMut<[u32]> + AsRef<[u32]> {
     /// Sets the value of the Context Entries field.
     ///
     /// # Examples
@@ -450,6 +466,22 @@ pub trait SlotHandler: AsMut<[u32]> {
     /// ```
     fn set_context_entries(&mut self, e: u8) {
         self.as_mut()[0].set_bits(27..=31, e.into());
+    }
+
+    /// Gets the value of the Root Hub Port Number field.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use xhci::context::{byte32::Device, DeviceHandler};
+    ///
+    /// let mut device = Device::new();
+    /// let slot = device.slot();
+    ///
+    /// let num = slot.root_hub_port_number();
+    /// ```
+    fn root_hub_port_number(&self) -> u8 {
+        self.as_ref()[1].get_bits(16..=23) as u8
     }
 
     /// Sets the value of the Root Hub Port Number field.
