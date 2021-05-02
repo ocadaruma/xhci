@@ -99,16 +99,11 @@ impl EventRingDequeuePointerRegister {
     /// Returns the address of the current Event Ring Dequeue Pointer.
     #[must_use]
     pub fn event_ring_dequeue_pointer(self) -> u64 {
-        self.0 & 0b1111
+        self.0
     }
 
     /// Sets the address of the current Event Ring Dequeue Pointer. It must be 16 byte aligned.
-    ///
-    /// # Panics
-    ///
-    /// This method panics if the address is not 16 byte aligned.
     pub fn set_event_ring_dequeue_pointer(&mut self, p: u64) {
-        assert!(p.trailing_zeros() >= 4);
         self.0 = p;
     }
 }
