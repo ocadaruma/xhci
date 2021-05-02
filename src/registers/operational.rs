@@ -216,7 +216,8 @@ impl DeviceContextBaseAddressArrayPointerRegister {
     /// This method panics if the given pointer is not 64 byte aligned.
     pub fn set(&mut self, p: u64) {
         assert!(p.trailing_zeros() >= 6);
-        self.0 = p;
+        let p = p >> 6;
+        self.0.set_bits(6..32, p);
     }
 }
 

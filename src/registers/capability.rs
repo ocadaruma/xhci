@@ -182,7 +182,7 @@ impl DoorbellOffset {
     /// Returns the offset of the Doorbell Array from the MMIO base.
     #[must_use]
     pub fn get(self) -> u32 {
-        self.0
+        self.0.get_bits(2..32) << 2
     }
 }
 
@@ -194,6 +194,6 @@ impl RuntimeRegisterSpaceOffset {
     /// Returns the offset of the Runtime Registers from the MMIO base.
     #[must_use]
     pub fn get(self) -> u32 {
-        self.0
+        self.0.get_bits(5..32) << 5
     }
 }
