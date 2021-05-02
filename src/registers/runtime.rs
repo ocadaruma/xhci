@@ -71,7 +71,7 @@ pub struct EventRingSegmentTableSizeRegister(u32);
 impl EventRingSegmentTableSizeRegister {
     /// Sets the number of segments the Event Ring Segment Table supports.
     pub fn set(&mut self, s: u16) {
-        self.0 = s.into();
+        self.0.set_bits(0..16, s as u32);
     }
 }
 
@@ -87,7 +87,8 @@ impl EventRingSegmentTableBaseAddressRegister {
     /// This method panics if the address is not 64 byte aligned.
     pub fn set(&mut self, a: u64) {
         assert!(a.trailing_zeros() >= 6);
-        self.0 = a;
+        let a = a >> 6;
+        self.0.set_bits(6..64, a);
     }
 }
 
@@ -99,12 +100,18 @@ impl EventRingDequeuePointerRegister {
     /// Returns the address of the current Event Ring Dequeue Pointer.
     #[must_use]
     pub fn event_ring_dequeue_pointer(self) -> u64 {
-        self.0
+        self.0.get_bits(4..64) << 4
     }
 
     /// Sets the address of the current Event Ring Dequeue Pointer. It must be 16 byte aligned.
+    ///
+    /// # Panics
+    ///
+    /// This method panics if the address is not 16 byte aligned.
     pub fn set_event_ring_dequeue_pointer(&mut self, p: u64) {
-        self.0 = p;
+        assert!(p.trailing_zeros() >= 4);
+        let p = p >> 4;
+        self.0.set_bits(4..64, p);
     }
 }
 impl fmt::Debug for EventRingDequeuePointerRegister {
