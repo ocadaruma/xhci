@@ -168,6 +168,10 @@ impl CommandRingControlRegister {
         self.0.set_bit(0, s);
     }
 
+    pub fn ring_cycle_state(&self) -> bool {
+        self.0.get_bit(0)
+    }
+
     /// Sets the value of the command stop bit
     pub fn set_command_stop(&mut self, s: bool) {
         self.0.set_bit(1, s);
@@ -194,6 +198,10 @@ impl CommandRingControlRegister {
 
         let p = p >> 6;
         self.0.set_bits(6..=63, p);
+    }
+
+    pub fn command_ring_pointer(&self) -> u64 {
+        self.0.get_bits(6..=63, p) << 6
     }
 }
 impl fmt::Debug for CommandRingControlRegister {
