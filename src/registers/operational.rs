@@ -95,6 +95,14 @@ impl UsbCommandRegister {
     pub fn set_interrupter_enable(&mut self, b: bool) {
         self.0.set_bit(2, b);
     }
+
+    pub fn set_host_system_error_enable(&mut self, b: bool) {
+        self.0.set_bit(3, b);
+    }
+
+    pub fn set_enable_wrap_event(&mut self, b: bool) {
+        self.0.set_bit(10, b);
+    }
 }
 impl fmt::Debug for UsbCommandRegister {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
